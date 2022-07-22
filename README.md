@@ -1,16 +1,16 @@
-## Test code sample to bill simple operations for Smart contracts written in JavaScript
+# Test code sample to bill simple operations for Smart contracts written in JavaScript
 
-# Operations list:
+## Operations list:
 ```
 pricePolicy.js
 ```
 
-# Test code to bill:
+## Test code to bill:
 ```
 testCode.js
 ```
 
-# To run:
+## To run:
 ```
 npm start
 ```
