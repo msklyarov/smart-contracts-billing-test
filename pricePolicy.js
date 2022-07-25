@@ -5,5 +5,6 @@ module.exports = {
   MUL: 5,
   SUB: 3,
   DIV: 5,
+  MOD: 10,
   CALLCODE: 20,
 };
