@@ -1,10 +1,9 @@
-// TODO: before comparing remove all spaces from the AST node, ie: require ('fs')
 const unsupportedCode = [
     'require(', 'Math.random(',
-    'setTimeout', 'clearTimeout',
-    'setImmediate', 'clearImmediate',
-    'setInterval', 'clearInterval',
-    'eval', 'console.', 'process.'
+    'setTimeout(', 'clearTimeout(',
+    'setImmediate(', 'clearImmediate(',
+    'setInterval(', 'clearInterval(',
+    'eval(', 'console.', 'process.'
 ];
 
 // https://ethereum.stackexchange.com/questions/11474/is-there-a-table-of-evm-instructions-and-their-gas-costs
