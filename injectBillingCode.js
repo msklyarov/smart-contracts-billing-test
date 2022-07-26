@@ -76,8 +76,8 @@ module.exports = (babel) => {
 
         path.insertBefore(billCoins(operationCost, operators.join(',')));
       },
-      FunctionDeclaration: (path) => {
-        path.get("body").pushContainer("body", billCoins(CALLCODE, 'CALLCODE'));
+      CallExpression: (path) => {
+        path.insertBefore(billCoins(CALLCODE, 'CALLCODE'));
       },
     },
   };

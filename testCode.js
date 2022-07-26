@@ -10,7 +10,14 @@ a = a - 1;
 
 a = a + 1 % 9;
 
-function f() {}
+function f() {
+  f1();
+}
+
+function f1() {
+  f();
+}
+
 
 f();
 f();
