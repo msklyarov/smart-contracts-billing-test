@@ -3,9 +3,13 @@ const babel = require("@babel/core");
 const injectBillingCode = require('./injectBillingCode');
 const bootstrapCode = require("./bootstrapCode");
 
-
 // read the filename from the command line arguments
 const fileName = "./testCode.js";
+
+let hasUnsupportedCode = false;
+const totalCoins = 1000;
+
+const setHasUnsupportedCode = (value) => { hasUnsupportedCode = value };
 
 // read the code from this file
 fs.readFile(fileName, function(err, data) {
@@ -16,11 +20,11 @@ fs.readFile(fileName, function(err, data) {
 
    // use our plugin to transform the source
    const out = babel.transform(src, {
-      plugins: [injectBillingCode]
+      plugins: [[injectBillingCode, { setHasUnsupportedCode }]]
    });
 
    const outFinal = babel.transform(out.code, {
-      plugins: [bootstrapCode]
+      plugins: [[bootstrapCode, { hasUnsupportedCode, totalCoins }]]
    });
 
    // print the generated code to screen

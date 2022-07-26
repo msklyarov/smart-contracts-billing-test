@@ -1,8 +1,8 @@
 ## Test code sample to bill simple operations for Smart contracts written in JavaScript
 
-### Operations list:
+### Operations prices, unsported functions:
 ```
-pricePolicy.js
+config.js
 ```
 
 ### Test code to bill:

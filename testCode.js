@@ -1,3 +1,6 @@
+// require ('test');
+eval ("require('x.js')");
+
 let a = 1;
 
 a = a + 5 * 2;
@@ -29,5 +32,3 @@ if (a === 1) {
 if (a === 1 * 3) {
     a = a * 8;
 }
-
-console.log('Result a :', a);

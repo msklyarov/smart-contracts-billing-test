@@ -1,4 +1,5 @@
-const { ADD, MUL, SUB, DIV, MOD, CALLCODE } = require('./pricePolicy.js');
+const config = require('./config.js');
+const { ADD, MUL, SUB, DIV, MOD, CALLCODE } = config.executionPrice;
 
 const billCoinsStringFunc = (cost, remark) => `
    billedCoins += ${cost};
@@ -53,7 +54,7 @@ const billOperators = (operators) => {
   return `// ${operators.join(',')}`;
 }
 
-module.exports = (babel) => {
+module.exports = (babel, { setHasUnsupportedCode }) => {
   const t = babel.types;
 
   const billCoins = (cost, remark) => babel.parse(billCoinsStringFunc(cost, remark)).program.body;
@@ -77,6 +78,14 @@ module.exports = (babel) => {
         path.insertBefore(billCoins(operationCost, operators.join(',')));
       },
       CallExpression: (path) => {
+
+        for (const command of config.unsupportedCode) {
+          if (path.toString().startsWith(command)) {
+            setHasUnsupportedCode(true);
+            return;
+          }
+        }
+
         path.insertBefore(billCoins(CALLCODE, 'CALLCODE'));
       },
     },
