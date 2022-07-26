@@ -78,14 +78,12 @@ module.exports = (babel, { setHasUnsupportedCode }) => {
         path.insertBefore(billCoins(operationCost, operators.join(',')));
       },
       CallExpression: (path) => {
-
         for (const command of config.unsupportedCode) {
           if (path.toString().startsWith(command)) {
             setHasUnsupportedCode(true);
             return;
           }
         }
-
         path.insertBefore(billCoins(CALLCODE, 'CALLCODE'));
       },
     },
