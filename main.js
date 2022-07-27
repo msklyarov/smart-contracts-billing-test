@@ -11,6 +11,9 @@ const totalCoins = 1000;
 
 const setHasUnsupportedCode = (value) => { hasUnsupportedCode = value };
 
+const billCoins = (cost, comment) =>
+   `if ((billedCoins += ${cost}) > totalCoins) throw new Error('Coins limit reached: ' + billedCoins); // ${comment}`;
+
 // read the code from this file
 fs.readFile(fileName, function(err, data) {
    if (err) throw err;
@@ -23,11 +26,14 @@ fs.readFile(fileName, function(err, data) {
       plugins: [[injectBillingCode, { setHasUnsupportedCode }]]
    });
 
-   const outFinal = babel.transform(out.code, {
+   const preFinal = babel.transform(out.code, {
       plugins: [[bootstrapCode, { hasUnsupportedCode, totalCoins }]]
    });
 
-   // print the generated code to screen
-   console.log(outFinal.code);
-   console.log(eval(outFinal.code));
+   const finalCode = preFinal.code.replace(/\/\/ #Bill#(?<COST>\d+)#(?<COMMENT>\w+)/g, (all ,cost, comment) => {
+      return billCoins(cost, comment);
+   });
+
+   console.log(finalCode)
+   console.log(eval(finalCode));
 });

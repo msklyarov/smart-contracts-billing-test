@@ -1,10 +1,6 @@
 const config = require('./config.js');
 const { ADD, MUL, SUB, DIV, MOD, CALLCODE, LOOPITER } = config.executionPrice;
 
-const billCoinsStringFunc = (cost, remark) => `
-   if ((billedCoins += ${cost}) > totalCoins) throw new Error('Coins limit reached: ' + billedCoins); // ${remark}
-`;
-
 const getOperators = (node, operators = []) => {
 
   if (node.type === 'BinaryExpression') {
@@ -42,19 +38,17 @@ const getOperatorsCost = (operators) => {
       case "%":
         cost += MOD;
         break;
-      }
+    }
   }
   return cost;
-}
-
-const billOperators = (operators) => {
-  return `// ${operators.join(',')}`;
 }
 
 module.exports = (babel, { setHasUnsupportedCode }) => {
   const t = babel.types;
 
-  const billCoins = (cost, remark) => babel.parse(billCoinsStringFunc(cost, remark)).program.body;
+  const billCoins = (cost, comment) => babel.parse(`
+    // #Bill#${cost}#${comment}
+  `);
 
   const loopInjection = path => {
     const bodyType = path.get("body").type;
@@ -76,14 +70,13 @@ module.exports = (babel, { setHasUnsupportedCode }) => {
 
   return {
     visitor: {
-      // ExpressionStatement: (path) => {
-      //   if (path.toString().startsWith('billedCoins +=') || path.expression && path.expression.type === 'CallExpression') return;
-
-      //   const operators = getOperators(path.node.expression);
-      //   const operationCost = getOperatorsCost(operators);
-
-      //   path.insertBefore(billCoins(operationCost, operators.join(',')));
-      // },
+      ExpressionStatement: (path) => {
+        const operators = getOperators(path.node.expression);
+        if (operators.length !== 0) {
+          const operationCost = getOperatorsCost(operators);
+          path.insertBefore(billCoins(operationCost, operators.join(',')));
+        }
+      },
       // IfStatement: (path) => {
       //   if (path.toString().startsWith('if (billedCoins > totalCoins)')) return;
 
