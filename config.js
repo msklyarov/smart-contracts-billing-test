@@ -14,6 +14,7 @@ const executionPrice = {
     DIV: 5,
     MOD: 10,
     CALLCODE: 20,
+    LOOPITER: 10,
 };
 
 module.exports = {

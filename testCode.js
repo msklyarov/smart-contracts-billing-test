@@ -1,7 +1,20 @@
 // require ('test');
-eval ("require('x.js')");
+// eval ("require('x.js')");
 
 let a = 1;
+
+do ; while (a++ < 3);
+do {} while (a++ < 3);
+do a++; while (a++ < 3);
+do {a = a;} while (a++ < 3);
+for (;;);
+for (;;) {}
+for (;;) a = a;
+for (;;) { a = a }
+while (a++ < 5);
+while (a++ < 5) {}
+while (a++ < 5) a = a;
+while (a++ < 5) {a = a;}
 
 a = a + 5 * 2;
 
